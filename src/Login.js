@@ -1,63 +1,62 @@
-import React, {useState} from 'react';
-import {View, Text,Image, TextInput, Button,PixelRatio, StyleSheet, TouchableOpacity} from 'react-native';
-import {useDispatch} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  Button,
+  PixelRatio,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import {useDispatch, useSelector, connect} from 'react-redux';
 import {loginUsers} from './redux/action/login';
 
-const Login = ({navigation}) => {
-  const dispatch = useDispatch();
+const Login  =(props) => {
+  //const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const users = useSelector(state => state.login);
+  //console.log('Home', users.user.data.Message);
 
-  const Submit = () => {
-    const data = {email, password};
-    dispatch(loginUsers(email, password));
-    navigation.navigate('Post');
-  };
+  if (users.user.data.Message == 'successfully Login') {
+    props.navigation.navigate('Post');
+  }
+  //const Submit = () => {
+  //   //const data = {email, password};
+  //   dispatch(loginUsers(email, password));
+  //   navigation.navigate('Post');
+  // };
   return (
     <>
-    <View style={{margin: PixelRatio.getPixelSizeForLayoutSize(20)}}>
-      <View style={styles.images}>
-        <Image source={require('./images/img2.png')} style={{height:'85%', width:'100%'}} />
+      <View style={{margin: PixelRatio.getPixelSizeForLayoutSize(20)}}>
+        <View style={styles.images}>
+          <Image
+            source={require('./images/img2.png')}
+            style={{height: '85%', width: '100%'}}
+          />
+        </View>
       </View>
-    </View>
-    <View style={styles.bottomContainer}>
+      <View style={styles.bottomContainer}>
         <Text style={styles.loginTextStyle}>Login</Text>
         <TextInput
           style={styles.textInputStyle}
           placeholder="Enter Email"
-          placeholderTextColor='#484542'
+          placeholderTextColor="#484542"
           onChangeText={text => setEmail(text)}
         />
         <TextInput
           style={styles.textInputStyle}
           placeholder="Enter Password"
-          placeholderTextColor='#484542'
+          placeholderTextColor="#484542"
           onChangeText={text => setPassword(text)}
         />
         <TouchableOpacity
           style={styles.buttonStyle}
-          onPress={Submit}>
+          onPress={() => props.submit({email: email, password: password})}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </View>
-      {/* <View style={{marginVertical: 20}}>
-        <TextInput
-          placeholder="Enter Email"
-          placeholderTextColor='#484542'
-          style={styles.input}
-          onChangeText={text => setEmail(text)}
-        />
-      </View>
-      <View style={{marginVertical: 20}}>
-        <TextInput
-          placeholder="Enter Password"
-          style={styles.input}
-          placeholderTextColor='#484542'
-          value={password}
-          onChangeText={text => setPassword(text)}
-        />
-      </View>
-      <Button title="Submit" onPress={Submit} /> */}
     </>
   );
 };
@@ -119,4 +118,12 @@ const styles = StyleSheet.create({
     fontSize: PixelRatio.getPixelSizeForLayoutSize(8),
   },
 });
-export default Login;
+
+const mapStateToProps = state => ({
+  cardData: state,
+});
+
+const mapDispatchToProps = dispatch => ({
+  submit: data => dispatch(loginUsers(data)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,11 +1,9 @@
 import * as type from '../types'
 
-export function loginUsers(email, password) {
+export function loginUsers(data) {
+    //console.log("action",data);
     return{
         type: type.LOGIN_REQUEST,
-        payload: {
-            email,
-            password
-        },
+        payload: data,
     }
 }
