@@ -16,12 +16,13 @@ const Login  =(props) => {
   //const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const users = useSelector(state => state.login);
-  //console.log('Home', users.user.data.Message);
+  //const users = useSelector(state => state.login);
 
-  if (users.user.data.Message == 'successfully Login') {
-    props.navigation.navigate('Post');
-  }
+  console.log('Home', props.cardData);
+
+  // if (users.user.data.Message == 'successfully Login') {
+  //   props.navigation.navigate('Post');
+  // }
   //const Submit = () => {
   //   //const data = {email, password};
   //   dispatch(loginUsers(email, password));
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  cardData: state,
+  cardData: state.login,
 });
 
 const mapDispatchToProps = dispatch => ({
